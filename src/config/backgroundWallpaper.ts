@@ -36,9 +36,9 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 	 * ],
 	 */
 	src: {
-  			desktop: "https://t.alcy.cc/pc",
-  			mobile: "https://t.alcy.cc/mp",
-		},
+		desktop: "https://t.alcy.cc/pc",
+		mobile: "https://t.alcy.cc/mp",
+	},
 	// Banner模式特有配置
 	banner: {
 		// 图片位置

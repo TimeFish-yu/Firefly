@@ -23,13 +23,13 @@ export const profileConfig: ProfileConfig = {
 	links: [
 		{
 			name: "Bilibili",
-			icon: "fa6-brands:bilibili",
+			icon: "fa7-brands:bilibili",
 			url: "https://m.bilibili.com/space/587847197",
 			showName: false,
 		},
 		{
 			name: "Support",
-			icon: "fa6-brands:paypal",
+			icon: "fa7-brands:paypal",
 			url: "https://text.ezane.top/sponsor/",
 			showName: false,
 		},
