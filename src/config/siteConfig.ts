@@ -91,134 +91,282 @@ export const siteConfig: SiteConfig = {
 	},
 
 	// 站点开始日期，用于统计运行天数
-	siteStartDate: "2025-01-01",
+	siteStartDate: "2026-03-07",
 
 	// 站点时区（IANA 时区字符串），用于格式化bangumi、rss里的构建日期时间等等..
 	// 示例："Asia/Shanghai", "UTC", 如果为空，则按照构建服务器的时区进行时区转换
 	timezone: "Asia/Shanghai",
 
 	// 提醒框（Admonitions）配置，修改后需要重启开发服务器才能生效
-	// 主题：'github' | 'obsidian' | 'vitepress'，每个主题风格和语法不同，可根据喜好选择
-	rehypeCallouts: {
-		theme: "github",
+	admonition: {
+		// 是否启用提醒框
+		enable: true,
+		// 提醒框样式，可选值："callout" | "block"
+		style: "callout",
 	},
 
-	// 文章页底部的"上次编辑时间"卡片开关
-	showLastModified: true,
-
-	// 文章过期阈值（天数），超过此天数才显示"上次编辑"卡片
-	outdatedThreshold: 30,
-
-	// 是否开启分享海报生成功能
-	sharePoster: true,
-
-	// OpenGraph图片功能,注意开启后要渲染很长时间，不建议本地调试的时候开启
-	generateOgImages: false,
-
-	// bangumi配置
-	bangumi: {
-		// Bangumi用户ID
-		userId: "1228504",
-		// 条目类型排序，数组中的类型将按顺序优先展示
-		// 可选值: "anime" | "book" | "music" | "game" | "real" (暂不支持"real"类型)
-		// 未列出的类型将按默认顺序排在后面
-		categoryOrder: ["anime","game"],
+	// 侧边栏配置
+	sidebar: {
+		// 侧边栏宽度（单位：rem）
+		width: 12,
+		// 侧边栏对齐方式，可选值："left" | "right"
+		align: "left",
+		// 侧边栏是否固定
+		sticky: true,
+		// 侧边栏是否可折叠
+		collapsible: true,
 	},
 
-	// 页面开关配置 - 控制特定页面的访问权限，设为false会返回404
-	// bangumi的数据为编译时获取的，所以不是实时数据，请配置bangumi.userId
-	pages: {
-		// 友链页面开关
-		friends: true,
-		// 赞助页面开关
-		sponsor: true,
-		// 留言板页面开关，需要配置评论系统
-		guestbook: true,
-		// 番组计划页面开关，含追番、游戏、书籍和音乐，dev调试时只获取一页数据，build才会获取全部数据
-		bangumi: true,
-		// 相册页面开关
-		gallery: false,
+	// 页脚配置
+	footer: {
+		// 是否显示页脚
+		enable: true,
+		// 页脚内容
+		content: "Powered by [Astro](https://astro.build/) & [Firefly](https://github.com/CuteLeaf/Firefly)",
 	},
 
-	// 分类导航栏开关，在首页和归档页顶部显示分类快捷导航
-	categoryBar: true,
-
-	// 文章列表布局配置
-	postListLayout: {
-		// 默认布局模式："list" 列表模式（单列布局），"grid" 网格模式（多列布局）
-		defaultMode: "list",
-		// 移动端默认布局模式，不设置则跟随 defaultMode
-		mobileDefaultMode: "list",
-		// 是否允许用户切换布局
-		allowSwitch: true,
-		// 网格布局配置，仅在 defaultMode 为 "grid" 或允许切换布局时生效
-		grid: {
-			// 是否开启瀑布流布局，同时有封面图和无封面图的混合文章推荐开启
-			masonry: false,
-			// 网格模式卡片最小宽度(px)，浏览器根据容器宽度自动计算列数
-			columnWidth: 320,
+	// 评论系统配置
+	comment: {
+		// 是否启用评论
+		enable: false,
+		// 评论系统类型，可选值："giscus" | "waline" | "twikoo"
+		type: "giscus",
+		// 评论系统配置
+		giscus: {
+			// GitHub 仓库
+			repo: "TimeFish-yu/Firefly",
+			// 仓库 ID
+			repoId: "R_kgDON...",
+			// 分类
+			category: "General",
+			// 分类 ID
+			categoryId: "DIC_kwDON...",
+			// 映射方式
+			mapping: "pathname",
+			// 反应
+			reactionsEnabled: "1",
+			// 发射
+			emitMetadata: "0",
+			// 输入位置
+			inputPosition: "bottom",
+			// 语言
+			lang: "zh-CN",
+			// 主题
+			theme: "light",
 		},
+	},
+
+	// 音乐播放器配置
+	music: {
+		// 是否启用音乐播放器
+		enable: false,
+		// 音乐播放器类型，可选值："meting" | "aplayer"
+		type: "meting",
+		// 音乐播放器配置
+		meting: {
+			// 服务器，可选值："netease" | "tencent" | "kugou" | "xiami" | "baidu"
+			server: "netease",
+			// 类型，可选值："song" | "album" | "artist" | "playlist"
+			type: "playlist",
+			// ID
+			id: "7812390483",
+		},
+	},
+
+	// 相册配置
+	gallery: {
+		// 是否启用相册
+		enable: true,
+		// 相册配置
+		albums: [
+			{
+				// 相册名称
+				name: "示例相册",
+				// 相册描述
+				description: "这是一个示例相册",
+				// 相册封面
+				cover: "/images/gallery/cover.avif",
+				// 相册图片
+				images: [
+					{
+						// 图片地址
+						src: "/images/gallery/1.avif",
+						// 图片描述
+						alt: "示例图片1",
+					},
+					{
+						// 图片地址
+						src: "/images/gallery/2.avif",
+						// 图片描述
+						alt: "示例图片2",
+					},
+				],
+			},
+		],
+	},
+
+	// 友链配置
+	friends: {
+		// 是否启用友链
+		enable: true,
+		// 友链配置
+		links: [
+			{
+				// 友链名称
+				name: "示例友链",
+				// 友链链接
+				link: "https://example.com",
+				// 友链头像
+			avatar: "https://example.com/avatar.jpg",
+				// 友链描述
+				description: "这是一个示例友链",
+			},
+		],
+	},
+
+	// 赞助配置
+	sponsor: {
+		// 是否启用赞助
+		enable: false,
+		// 赞助链接
+		link: "https://afdian.net/a/username",
+	},
+
+	// 公告配置
+	announcement: {
+		// 是否启用公告
+		enable: false,
+		// 公告内容
+		content: "",
+	},
+
+	// 樱花特效配置
+	sakura: {
+		// 是否启用樱花特效
+		enable: false,
+		// 樱花数量
+		count: 20,
+	},
+
+	// Live2D 配置
+	live2d: {
+		// 是否启用 Live2D
+		enable: false,
+		// Live2D 模型
+		model: "haru",
+	},
+
+	// 字体配置
+	font: fontConfig,
+
+	// 背景壁纸配置
+	wallpaper: {
+		// 是否启用背景壁纸
+		enable: false,
+		// 背景壁纸图片
+		image: "/images/wallpaper.jpg",
+		// 背景壁纸透明度
+		opacity: 0.5,
+	},
+
+	// 个人信息配置
+	profile: {
+		// 是否启用个人信息
+		enable: true,
+		// 名称
+		name: "Zane",
+		// 头像
+		avatar: "/images/avatar.jpg",
+		// 简介
+		description: "一个爱折腾的博主",
+		// 社交链接
+		social: [
+			{
+				// 社交平台
+				platform: "github",
+				// 社交链接
+				link: "https://github.com/TimeFish-yu",
+			},
+			{
+				// 社交平台
+				platform: "email",
+				// 社交链接
+				link: "mzane@foxmail.com",
+			},
+		],
+	},
+
+	// 文章配置
+	post: {
+		// 文章默认封面
+		defaultCover: "/images/default-cover.avif",
+		// 文章摘要长度
+		excerptLength: 200,
+		// 文章是否显示目录
+		toc: true,
+		// 文章是否显示字数统计
+		wordCount: true,
+		// 文章是否显示阅读时间
+		readTime: true,
+		// 文章是否显示更新日期
+		showUpdatedDate: true,
 	},
 
 	// 分页配置
 	pagination: {
-		// 每页显示的文章数量
-		postsPerPage: 10,
+		// 每页文章数量
+		size: 10,
+		// 是否显示分页
+		enable: true,
 	},
 
-	// 统计分析
-	analytics: {
-		// Google Analytics ID
-		googleAnalyticsId: "",
-		// Microsoft Clarity ID
-		microsoftClarityId: "",
-		// Umami 统计配置
-		umamiAnalytics: {
-			// Umami Website ID
-			websiteId: "",
-			// Umami JS地址，支持使用自建
-			scriptUrl: "https://cloud.umami.is/script.js",
-		},
-		// 51la 统计配置
-		la51Analytics: {
-			// 51la 统计 ID
-			Id: "",
-			// 自定义 SDK JS 地址，防止 DNS 污染，留空使用默认地址
-			sdkUrl: "",
-			// 多个统计 ID 的数据分离标识，留空则使用 Id
-			ck: "",
-			// 是否开启事件分析功能
-			autoTrack: false,
-			//  Hash路由模式, 项目使用History API路由, 所以不必开启默认false
-			hashMode: false,
-			// 是否开启网站录屏功能
-			screenRecord: true,
-		},
+	// 搜索配置
+	search: {
+		// 是否启用搜索
+		enable: true,
+		// 搜索类型，可选值："local" | "algolia"
+		type: "local",
 	},
 
-	// 图像优化及响应式配置
-	// 图像优化压缩只保留avif或webp
-	// 响应式图像是为在不同设备上提高性能而调整的图像。这些图像可以调整大小以适应其容器，并且可以根据访问者的屏幕尺寸和分辨率以不同的大小提供。
-	// Astro 仅能对 src 目录下的图像进行优化，src 目录下的图像越多，构建时间会越长
-	// Astro 图像文档 https://docs.astro.build/zh-cn/guides/images/
-	imageOptimization: {
-		// 输出图片格式
-		// - "avif": 仅输出 AVIF 格式（最新技术，最小体积，目前兼容性较低）
-		// - "webp": 仅输出 WebP 格式（体积适中，兼容性好）
-		// - "both": 同时输出 AVIF 和 WebP（推荐，浏览器自动选择最佳格式）
-		formats: "webp",
-		// 图片压缩质量 (1-100)，值越低体积越小但质量越差，推荐 70-85
-		quality: 85,
-		// 为特定域名的图片添加 referrerpolicy="no-referrer" 属性
-		// 支持通配符 *，例如：["i0.hdslb.com", "*.bilibili.com"]
-		// 可解决指定域名图片加载时的 403 问题（如防盗链图片）
-		noReferrerDomains: [],
+	// 代码块配置
+	codeBlock: {
+		// 是否启用代码块
+		enable: true,
+		// 代码块主题
+		theme: "github-dark",
+		// 代码块是否显示行号
+		showLineNumbers: true,
+		// 代码块是否可复制
+		copyable: true,
 	},
 
-	// 字体配置
-	// 在src/config/fontConfig.ts中配置具体字体
-	font: fontConfig,
+	// 数学公式配置
+	math: {
+		// 是否启用数学公式
+		enable: true,
+		// 数学公式引擎，可选值："katex" | "mathjax"
+		engine: "katex",
+	},
 
-	// 站点语言，在本配置文件顶部SITE_LANG定义
-	lang: SITE_LANG,
+	// 图表配置
+	chart: {
+		// 是否启用图表
+		enable: true,
+		// 图表引擎，可选值："mermaid"
+		engine: "mermaid",
+	},
+
+	// 加密配置
+	encryption: {
+		// 是否启用加密
+		enable: false,
+		// 加密密码
+		password: "",
+	},
+
+	// 自定义头部代码
+	customHead: "",
+
+	// 自定义底部代码
+	customFooter: "",
 };
