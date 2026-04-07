@@ -44,7 +44,6 @@
 
 - 💬 **博客留言**：在文章下方评论区留言
 - 📧 **邮箱**：mzane@foxmail.com
-- 🐙 **GitHub**：[TimeFish-yu](https://github.com/TimeFish-yu)
 
 ## 🙏 致谢
 
