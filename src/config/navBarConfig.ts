@@ -34,9 +34,8 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		url: "/my/",
 		icon: "material-symbols:person",
 		children: [
-
-                        // 关于页面
-                        LinkPreset.About,
+			// 关于页面
+			LinkPreset.About,
 
 			// 根据配置决定是否添加相册，在siteConfig关闭pages.gallery时导航栏不显示相册
 			...(siteConfig.pages.gallery ? [LinkPreset.Gallery] : []),
@@ -44,8 +43,8 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 			// 根据配置决定是否添加番组计划，在siteConfig关闭pages.bangumi时导航栏不显示番组计划
 			...(siteConfig.pages.bangumi ? [LinkPreset.Bangumi] : []),
 
-                        // 根据配置决定是否添加赞助，在siteConfig关闭pages.sponsor时导航栏不显示赞助
-                        ...(siteConfig.pages.sponsor ? [LinkPreset.Sponsor] : []),
+			// 根据配置决定是否添加赞助，在siteConfig关闭pages.sponsor时导航栏不显示赞助
+			...(siteConfig.pages.sponsor ? [LinkPreset.Sponsor] : []),
 		],
 	});
 
