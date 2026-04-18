@@ -8,7 +8,7 @@ import path from "node:path";
 const allSays = await getCollection("says");
 const saysFiltered = allSays.filter((say) => !say.data.draft);
 
-// 获取文件创建时间
+// 获取文件创建时间并转换为北京时间
 const saysDir = path.join(process.cwd(), "src/content/says");
 const says = saysFiltered.map((say) => {
   const filePath = path.join(saysDir, `${say.id}.md`);
@@ -16,14 +16,15 @@ const says = saysFiltered.map((say) => {
   
   try {
     const stats = fs.statSync(filePath);
-    // 使用文件创建时间（birthtime），格式化为 YYYY-MM-DD HH:mm
+    // 使用文件创建时间（birthtime）
     if (!fileDate) {
-      const d = stats.birthtime;
+      const utcDate = stats.birthtime;
+      // 转换为北京时间 (UTC+8)
+      const beijingTime = new Date(utcDate.getTime() + 8 * 60 * 60 * 1000);
       const pad = (n: number) => n.toString().padStart(2, "0");
-      fileDate = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      fileDate = `${beijingTime.getUTCFullYear()}-${pad(beijingTime.getUTCMonth() + 1)}-${pad(beijingTime.getUTCDate())} ${pad(beijingTime.getUTCHours())}:${pad(beijingTime.getUTCMinutes())}`;
     }
   } catch (e) {
-    // 文件不存在时的 fallback
     if (!fileDate) fileDate = say.id;
   }
   
