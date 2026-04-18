@@ -36,7 +36,19 @@ const specCollection = defineCollection({
 	schema: z.object({}),
 });
 
+// 说说集合 - 用于记录碎碎念和随笔
+const saysCollection = defineCollection({
+	loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/says" }),
+	schema: z.object({
+		published: z.date(),
+		emoji: z.string().optional().default("💭"),
+		mood: z.string().optional().default(""),
+		tags: z.array(z.string()).optional().default([]),
+	}),
+});
+
 export const collections = {
 	posts: postsCollection,
 	spec: specCollection,
+	says: saysCollection,
 };
