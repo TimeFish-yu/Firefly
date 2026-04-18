@@ -36,14 +36,12 @@ const specCollection = defineCollection({
 	schema: z.object({}),
 });
 
-// 说说集合 - 用于记录碎碎念和随笔
+// 说说集合 - 极简版，只需要内容
 const saysCollection = defineCollection({
 	loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/says" }),
 	schema: z.object({
-		published: z.date(),
-		emoji: z.string().optional().default("💭"),
-		mood: z.string().optional().default(""),
-		tags: z.array(z.string()).optional().default([]),
+		// 可选：手动指定时间，不填则使用文件创建时间
+		date: z.string().optional(),
 	}),
 });
 
