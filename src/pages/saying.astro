@@ -2,11 +2,18 @@
 import { getCollection } from "astro:content";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
 
-// 获取所有说说并按 ID 排序（ID 是文件名，越新越大）
+// 获取所有说说并按文件名排序（文件名越大越新）
 const allSays = await getCollection("says");
 const says = allSays
   .filter((say) => !say.data.draft)
   .sort((a, b) => b.id.localeCompare(a.id));
+
+// 格式化日期函数
+function formatDate(dateStr: string | undefined, fileId: string): string {
+  if (dateStr) return dateStr;
+  // 没有指定日期时，显示文件ID
+  return `#${fileId}`;
+}
 ---
 
 <MainGridLayout title="说说" description="我的碎碎念">
@@ -18,10 +25,10 @@ const says = allSays
       <div class="space-y-4">
         {says.map((say) => (
           <article class="rounded-lg bg-black/3 dark:bg-white/3 p-4 md:p-6">
+            <p class="text-xs text-black/30 dark:text-white/30 mb-3">
+              {formatDate(say.data.date, say.id.replace(".md", ""))}
+            </p>
             <div class="prose dark:prose-invert max-w-none" set:html={say.body} />
-            {say.data.date && (
-              <p class="text-xs text-black/30 dark:text-white/30 mt-3 mb-0">{say.data.date}</p>
-            )}
           </article>
         ))}
       </div>
@@ -34,23 +41,17 @@ const says = allSays
     </div>
   </div>
 
-  <!-- Giscus 评论区 -->
+  <!-- Twikoo 评论区 -->
   <div class="card-base w-full mt-4 px-9 py-6">
     <h2 class="text-xl font-bold mb-4">评论</h2>
-    <script src="https://giscus.app/client.js"
-      data-repo="TimeFish-yu/Firefly"
-      data-repo-id="R_kgDOOIK0Yg"
-      data-category="Announcements"
-      data-category-id="DIC_kwDOOIK0Ys4Cq4n9"
-      data-mapping="pathname"
-      data-strict="0"
-      data-reactions-enabled="1"
-      data-emit-metadata="0"
-      data-input-position="top"
-      data-theme="preferred_color_scheme"
-      data-lang="zh-CN"
-      crossorigin="anonymous"
-      async>
+    <div id="tcomment"></div>
+    <script is:inline src="https://cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js"></script>
+    <script is:inline>
+      twikoo.init({
+        envId: 'https://twikoo.ezane.top/',  // 你的 Twikoo 环境地址
+        el: '#tcomment',
+        path: location.pathname,
+      });
     </script>
   </div>
 </MainGridLayout>
