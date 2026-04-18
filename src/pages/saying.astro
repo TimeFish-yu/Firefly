@@ -1,0 +1,90 @@
+---
+import { getCollection } from "astro:content";
+import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import { Icon } from "astro-icon/components";
+
+// 获取所有说说并按日期排序
+const allSays = await getCollection("says");
+const says = allSays
+  .filter((say) => !say.data.draft)
+  .sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf());
+
+// 格式化日期
+function formatDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+}
+---
+
+<MainGridLayout title="说说" description="我的碎碎念">
+  <div class="flex w-full">
+    <div class="card-base z-10 px-9 py-8 relative w-full">
+      <!-- 页面标题 -->
+      <div class="flex items-center gap-3 mb-6">
+        <span class="text-3xl">💭</span>
+        <h1 class="text-2xl font-bold">说说</h1>
+      </div>
+      
+      <p class="text-black/50 dark:text-white/50 mb-8">
+        随手记录，想到什么就说什么~
+      </p>
+
+      <!-- 说说列表 -->
+      <div class="space-y-6 relative">
+        <!-- 时间线 -->
+        <div class="absolute left-[17px] top-3 bottom-3 w-0.5 bg-black/10 dark:bg-white/10"></div>
+        
+        {says.map((say) => (
+          <div class="relative pl-12">
+            <!-- 时间线节点 -->
+            <div class="absolute left-2 top-1.5 w-6 h-6 rounded-full bg-[var(--primary)] flex items-center justify-center text-white text-sm">
+              {say.data.emoji}
+            </div>
+            
+            <!-- 说说内容 -->
+            <div class="bg-black/3 dark:bg-white/3 rounded-lg p-4 hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+              <div class="prose dark:prose-invert max-w-none">
+                <p class="!my-0" set:html={say.body?.replace(/\n/g, '<br/>')} />
+              </div>
+              
+              <div class="flex items-center gap-4 mt-3 text-sm text-black/40 dark:text-white/40">
+                <span class="flex items-center gap-1">
+                  <Icon name="material-symbols:calendar-today" class="w-4 h-4" />
+                  {formatDate(say.data.published)}
+                </span>
+                
+                {say.data.mood && (
+                  <span class="flex items-center gap-1">
+                    <Icon name="material-symbols:mood" class="w-4 h-4" />
+                    {say.data.mood}
+                  </span>
+                )}
+                
+                {say.data.tags.length > 0 && (
+                  <div class="flex items-center gap-1">
+                    {say.data.tags.map((tag) => (
+                      <span class="px-2 py-0.5 rounded-full bg-[var(--primary)]/10 text-[var(--primary)] text-xs">
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {says.length === 0 && (
+        <div class="text-center text-black/40 dark:text-white/40 py-12">
+          <span class="text-4xl block mb-4">✨</span>
+          还没有说说，来发第一条吧~
+        </div>
+      )}
+    </div>
+  </div>
+</MainGridLayout>
