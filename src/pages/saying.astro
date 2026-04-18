@@ -13,9 +13,11 @@ const saysDir = path.join(process.cwd(), "src/content/says");
 const says = saysFiltered.map((say) => {
   const filePath = path.join(saysDir, `${say.id}.md`);
   let fileDate = say.data.date || "";
+  let timestamp = 0;
   
   try {
     const stats = fs.statSync(filePath);
+    timestamp = stats.birthtimeMs; // 用毫秒时间戳排序
     // 使用文件创建时间（birthtime）
     if (!fileDate) {
       const utcDate = stats.birthtime;
@@ -31,8 +33,9 @@ const says = saysFiltered.map((say) => {
   return {
     ...say,
     displayDate: fileDate,
+    timestamp,
   };
-}).sort((a, b) => b.id.localeCompare(a.id));
+}).sort((a, b) => b.timestamp - a.timestamp); // 按创建时间降序，最新的在前
 ---
 
 <MainGridLayout title="说说" description="我的碎碎念">
