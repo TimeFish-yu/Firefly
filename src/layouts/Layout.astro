@@ -8,6 +8,7 @@ import FontManager from "@components/features/FontManager.astro";
 import MusicManager from "@components/features/MusicManager.astro";
 import SakuraEffect from "@components/features/SakuraEffect.astro";
 import ConfigCarrier from "@components/layout/ConfigCarrier.astro";
+import Analytics from "@vercel/analytics/astro";
 
 import {
 	backgroundWallpaper,
@@ -120,6 +121,7 @@ const siteLang = lang.replace("_", "-");
             screenRecord={siteConfig.analytics.la51Analytics?.screenRecord}
             />
     )}
+    <Analytics />
 
     <title>{pageTitle}</title>
     <meta
@@ -209,7 +211,7 @@ const siteLang = lang.replace("_", "-");
             }
           }
 
-          // 立即处理页面上的所有图片
+          // 立即处理页面上的所有��片
           document.querySelectorAll('img').forEach(processImage);
 
           // 使用 MutationObserver 监听动态加载的图片
