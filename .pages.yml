@@ -268,7 +268,7 @@ content:
     items:
       - name: all-css
         label: ✪CSS
-        type: group
+        type: collection
         path: /assets/css
         format: code
         description: CSS集合
