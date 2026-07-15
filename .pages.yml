@@ -266,12 +266,12 @@ content:
     type: group
     description: 导航栏、侧边栏、壁纸、字体等视觉相关配置
     items:
-      - name: all-css
-        label: ✪CSS
-        type: collection
-        path: /assets/css
+      - name: twokii-css
+        label: Twokii样式
+        type: file
+        path: /assets/css/twokii
         format: code
-        description: CSS集合
+        description: 
 
       - name: nav-bar-config
         label: 🧭 导航栏
