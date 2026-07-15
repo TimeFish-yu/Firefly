@@ -1,29 +1,61 @@
+---
+title: 关于我
+---
 # 关于我 / About Me
 
-你好！我是 **夏叶** ，一个在数字世界中默默无闻的一片叶子。
+你好！我是 **Zane**，一个对技术充满热情、喜欢探索数字世界的普通人。📱💻
 
-## 🛠️ 关于本站
+## 🎯 我是谁
 
-这个网站使用 **Astro** 框架构建，采用了 [Firefly](https://github.com/CuteLeaf/Firefly) 模板，Firefly 是基于 [Fuwari](https://github.com/saicaca/fuwari) 的二次开发。
+- 📍 **位置**：中国山东
+- 💼 **身份**：技术爱好者、摄影爱好者
+- 🎮 **爱好**：摄影、游戏、科技数码
+- 📚 **学习**：对技术开发充满兴趣，喜欢尝试新工具和新技术
 
-**Firefly** 是一款基于 Astro 框架和 Fuwari 模板开发的清新美观且现代化个人博客主题模板，专为技术爱好者和内容创作者设计。该主题融合了现代 Web 技术栈，提供了丰富的功能模块和高度可定制的界面，让您能够轻松打造出专业且美观的个人博客网站。
+## 🛠️ 我的兴趣领域
 
+### 📱 科技数码
 
-**🖥️在线预览： [Firefly - Demo site](https://firefly.cuteleaf.cn/)**
+我对科技产品很感兴趣。喜欢体验新技术带来的便利。🎧
 
-**🏠我的博客： [https://blog.cuteleaf.cn](https://blog.cuteleaf.cn/)**
+### 📷 摄影
 
-**📝Firefly使用文档： [https://docs-firefly.cuteleaf.cn](https://docs-firefly.cuteleaf.cn/)**
+我喜欢用镜头记录生活中的美好瞬间。📸
 
-**⭐Firefly开源地址：[https://github.com/CuteLeaf/Firefly](https://github.com/CuteLeaf/Firefly)** 
+### 🎮 游戏
 
-**⭐Fuwari开源地址：[https://github.com/saicaca/fuwari](https://github.com/saicaca/fuwari)**
+偶尔玩一些游戏放松心情。🎮
+
+## 💻 技术栈
+
+我是一个技术爱好者，喜欢折腾各种工具：
+
+- 📝 **笔记工具**：Obsidian、Gridea
+- 🛠️ **开发工具**：VS Code、Qoder CN、Android Studio
+- 📊 **效率工具**：QoderWork
+
+## 🚀 我的博客
+
+你正在访问的这个博客使用 [Firefly](https://github.com/CuteLeaf/Firefly) 主题构建：
+
+- 🎨 **主题**：Firefly（基于Astro框架，由 [CuteLeaf](https://github.com/CuteLeaf) 开发）
+- 🚀 **部署**：Vercel（自动构建+CDN）
+- 🔗 **域名**：blog.ezane.top
+- 📝 **内容**：技术分享、生活记录、学习笔记
 
 ::github{repo="CuteLeaf/Firefly"}
 
-::github{repo="saicaca/fuwari"}
+## 📞 联系方式
+
+如果你想和我交流技术问题、分享有趣的想法，或者只是想打个招呼，欢迎通过以下方式联系我：
+
+- 💬 **博客留言**：在文章下方评论区留言
+- 📧 **邮箱**：[mzane@foxmail.com](mailto:mzane@foxmail.com)
+
+## 🙏 致谢
+
+感谢你访问我的博客！希望这里的内容对你有所帮助。
 
 ---
 
-*感谢你的来访！希望在这里能找到对你有用的内容！*
-
+*最后更新：2026年4月7日*
