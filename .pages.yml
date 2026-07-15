@@ -19,9 +19,16 @@ media:
 
   # 头图 / 壁纸
   - name: banner
-    label: 站点头图
-    input: public/assets/images
-    output: /assets/images
+    label: 配置图片
+    input: src/assets/images
+    output: /images
+    categories: [image]
+
+  # public 静态资源 - 封面图、音乐封面等
+  - name: photo
+    label: 相册
+    input: public/gallery
+    output: /gallery
     categories: [image]
 
 content:
