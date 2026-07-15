@@ -266,6 +266,13 @@ content:
     type: group
     description: 导航栏、侧边栏、壁纸、字体等视觉相关配置
     items:
+      - name: all-css
+        label: ✪CSS
+        type: group
+        path: /assets/css
+        format: code
+        description: CSS集合
+
       - name: nav-bar-config
         label: 🧭 导航栏
         type: file
