@@ -1,30 +1,34 @@
-# PagesCMS 配置 - Firefly 博客
-# 基于 PagesCMS v2.x 官方 schema 编写
-# 文档: https://pagescms.org/docs/configuration/
+# ============================================================
+# Pages CMS 配置 - Firefly 博客 (小白友好 / 精细化管理版)
+# 仓库: TimeFish-yu/Firefly  |  主题: Cuteleaf/Firefly (Astro)
+# 官方文档: https://pagescms.org/docs/configuration/
+# 字段与 Firefly 的 src/content.config.ts 完全对齐
+#
+# 使用须知(给新手):
+#   1. 图片一律上传到「public/」下的源(Pages CMS 里叫"站点资源"/"相册"),
+#      这样写进文章的路径是 /assets/xxx，线上一定能打开。
+#      不要往 src/ 下的图片目录传——那里不会被网址直接访问，会 404。
+#   2. 文章封面、正文插图都用「站点资源」这一个源就够了。
+#   3. 配置类(.ts)文件在 CMS 里是「代码模式」，直接改 TypeScript，
+#      改错语法会让网站构建失败，新手请照描述里的字段改、勿删结构。
+# ============================================================
 
 media:
-  # 文章配图 - 上传到文章目录的 images 子文件夹
-  - name: post-images
-    label: 文章配图
-    input: src/content/posts/images
-    output: /images
-    categories: [image]
-
-  # public 静态资源 - 封面图、音乐封面等
+  # 站点资源：头像、Logo、文章封面、正文插图都放这里（public 下，最稳）
   - name: assets
     label: 站点资源
     input: public/assets
     output: /assets
     categories: [image]
 
-  # 头图 / 壁纸
+  # 横幅 / 壁纸：背景图放这里（也必须在 public 下才能被网址访问）
   - name: banner
-    label: 配置图片
-    input: src/assets/images
-    output: /images
+    label: 横幅/壁纸
+    input: public/assets/images
+    output: /assets/images
     categories: [image]
 
-  # public 静态资源 - 封面图、音乐封面等
+  # 相册图片
   - name: photo
     label: 相册
     input: public/gallery
@@ -33,36 +37,38 @@ media:
 
 content:
   # ============================================================
-  # 📝 内容页面
+  # 📝 内容页面（最常改的地方，做成最友好的样子）
   # ============================================================
   - name: content-pages
-    label: 📝 内容页面
+    label: 📝 内容管理
     type: group
     items:
-      # 博客文章 (collection)
+      # ---------- 博客文章 ----------
       - name: posts
         label: 📝 博客文章
         type: collection
         path: src/content/posts
         format: yaml-frontmatter
+        subfolders: true            # 文章在 Yui/、guide/ 等子目录，必须开，否则后台看不到
         filename:
-          template: "{primary}.md"
+          template: "{primary}.md"  # 默认用标题当文件名；新建时可改成英文 slug（如 my-post）
           field: create
         exclude: ["**/images/**", "**/*.avif", "**/*.webp", "**/*.png", "**/*.jpg"]
         view:
           primary: title
-          fields: [title, published, tags, category, draft, pinned]
-          sort: ["published desc", "title asc"]
+          fields: [title, published, category, tags, draft, pinned]
+          sort: [published, title]
           search: [title, description, tags, category]
           default:
             sort: published
             order: desc
         fields:
+          # —— 基础信息（最先填）——
           - name: title
-            label: 标题
+            label: 文章标题
             type: string
             required: true
-            description: 文章标题
+            description: 博客列表和详情页显示的大标题。
 
           - name: published
             label: 发布时间
@@ -70,29 +76,53 @@ content:
             required: true
             options:
               time: false
-              format: yyyy-MM-dd
+            description: 文章发布日期，决定排序和归档位置。
 
           - name: updated
             label: 更新时间
             type: date
             options:
               time: false
-              format: yyyy-MM-dd
+            description: 最近修改日期。留空表示未修改。
 
           - name: draft
-            label: 草稿
+            label: 存为草稿
             type: boolean
             default: false
+            description: "开=不公开（网站上看不到），关=正常发布。写一半先存草稿就开它。"
+
+          - name: pinned
+            label: 置顶
+            type: boolean
+            default: false
+            description: 开=固定在列表最前面，适合重要公告。
 
           - name: description
             label: 文章摘要
             type: text
-            description: 简短描述，留空则自动截取正文
+            description: 列表卡片下方的小段介绍。留空会自动截取正文前几句。
 
           - name: image
             label: 封面图
             type: image
-            description: 文章封面图片路径
+            options:
+              media: assets        # 走 public/assets，路径写成 /assets/xxx，线上必显示
+            description: 列表和详情页顶部的大图。点输入框上传或选「站点资源」里的图。
+
+          - name: category
+            label: 分类
+            type: select
+            options:
+              creatable: true       # 下拉没有就直接输入新建
+              values:
+                - { label: 文章示例, value: 文章示例 }
+                - { label: 技术笔记, value: 技术笔记 }
+                - { label: 生活随笔, value: 生活随笔 }
+                - { label: 教程, value: 教程 }
+                - { label: 读书, value: 读书 }
+                - { label: ACGN, value: ACGN }
+                - { label: 资源, value: 资源 }
+            description: 文章归类（如"技术笔记"）。可下拉选，也可直接打字新建分类。
 
           - name: tags
             label: 标签
@@ -103,18 +133,16 @@ content:
               values:
                 - { label: 演示, value: 演示 }
                 - { label: 示例, value: 示例 }
+                - { label: 文章示例, value: 文章示例 }
                 - { label: Markdown, value: Markdown }
                 - { label: Firefly, value: Firefly }
                 - { label: 博客, value: 博客 }
                 - { label: 主题, value: 主题 }
+                - { label: 模板, value: 模板 }
                 - { label: 教程, value: 教程 }
                 - { label: JavaScript, value: JavaScript }
                 - { label: Astro, value: Astro }
-
-          - name: category
-            label: 分类
-            type: string
-            description: 文章分类（如"文章示例"、"技术笔记"）
+            description: 可多选。用于标签页筛选，没有的标签直接输入新建。
 
           - name: lang
             label: 语言
@@ -126,52 +154,82 @@ content:
                 - { label: 日本語, value: ja }
                 - { label: 繁體中文, value: zh_TW }
                 - { label: Русский, value: ru }
+            description: 文章语言，影响界面文案。中文留空即可。
 
-          - name: pinned
-            label: 置顶
-            type: boolean
-            default: false
-
+          # —— 进阶（一般不用动）——
           - name: author
             label: 作者
             type: string
-            description: 覆盖默认作者名（通常留空）
+            description: 覆盖默认作者名。通常留空，自动用站点配置里的名字。
 
           - name: sourceLink
             label: 原文链接
             type: string
-            description: 转载/翻译文章的原始出处
+            description: 转载/翻译文章时填原出处网址。
 
           - name: licenseName
             label: 许可协议名称
             type: string
-            description: 如 CC BY-NC-SA 4.0
+            description: 如 CC BY-NC-SA 4.0。留空用站点默认协议。
 
           - name: licenseUrl
             label: 许可协议链接
             type: string
+            description: 许可协议详情页网址。
 
           - name: comment
             label: 启用评论
             type: boolean
             default: true
+            description: 关=这篇文章底下不显示评论区。
 
           - name: password
             label: 文章密码
             type: string
-            description: 设置后需要密码才能查看（留空为公开）
+            description: 设了密码，访客需输入才能看。留空=公开。
 
           - name: passwordHint
             label: 密码提示
             type: string
-            description: 提示访问者密码是什么
+            description: 给访客的密码线索。
 
           - name: body
             label: 正文
-            type: rich-text
+            type: text
             required: true
+            description: 文章主体，支持 Markdown（# 标题、- 列表、```代码块```、![图](/assets/xxx) 等）。
 
-      # 关于页面
+      # ---------- 说说 / 动态 ----------
+      - name: dynamic
+        label: 💬 说说/动态
+        type: collection
+        path: src/content/dynamic
+        format: yaml-frontmatter
+        filename:
+          template: "{year}-{month}-{day}-{hour}{minute}{second}.md"
+          field: false            # 文件名按时间自动生成，无需手填
+        view:
+          primary: published
+          fields: [published]
+          sort: [published]
+          default:
+            sort: published
+            order: desc
+        fields:
+          - name: published
+            label: 发布时间
+            type: date
+            required: true
+            options:
+              time: true
+            description: 说说的发布时刻（含时分秒）。
+          - name: body
+            label: 内容
+            type: text
+            required: true
+            description: 说说的文字，支持 Markdown。
+
+      # ---------- 关于页面 ----------
       - name: about
         label: 📄 关于页面
         type: file
@@ -182,11 +240,13 @@ content:
             label: 页面标题
             type: string
             default: "关于我"
+            description: 浏览器标签和页面大标题。
           - name: body
             label: 正文
-            type: rich-text
+            type: text
+            description: 自我介绍内容，支持 Markdown。
 
-      # 友情链接
+      # ---------- 友情链接 ----------
       - name: friends
         label: 🔗 友情链接
         type: file
@@ -201,13 +261,13 @@ content:
             label: 页面描述
             type: string
           - name: body
-            label: 正文
+            label: 友链内容(MDX)
             type: code
             options:
               format: mdx
-            description: MDX 格式（包含 JSX 组件），使用代码模式编辑
+            description: 友链用 MDX 组件写（含 JSX），用代码模式编辑，照已有格式改。
 
-      # 留言板
+      # ---------- 留言板 ----------
       - name: guestbook
         label: 📬 留言板
         type: file
@@ -220,43 +280,44 @@ content:
             default: 留言板
           - name: body
             label: 正文
-            type: rich-text
+            type: text
+            description: 留言板页的说明文字，支持 Markdown。
 
   # ============================================================
-  # ⚙️ 站点设置
+  # ⚙️ 站点设置（改网站整体信息，新手最常动前两个）
   # ============================================================
   - name: site-settings
     label: ⚙️ 站点设置
     type: group
-    description: 核心站点配置，包括标题、域名、SEO、个人信息等
+    description: 站点标题、个人信息、公告等核心配置。改完保存即生效，但务必保留 TypeScript 结构。
     items:
       - name: site-config
         label: 🌐 站点主配置
         type: file
         path: src/config/siteConfig.ts
         format: code
-        description: 站点标题、URL、主题色、分页、Bangumi 等核心设置
+        description: "关键字段：title(站名)、subtitle(副标题)、site_url(域名)、description(描述)、keywords(关键词)、themeColor(主题色 hue 0-360 / defaultMode light|dark|system)、navbar(Logo与标题)、pages(各页面开关 friends/sponsor/guestbook/bangumi/gallery/dynamic)、postListLayout(列表布局)、pagination.postsPerPage(每页篇数)。"
 
       - name: profile-config
         label: 👤 个人信息
         type: file
         path: src/config/profileConfig.ts
         format: code
-        description: 头像、昵称、签名、社交链接等个人资料配置
+        description: "关键字段：avatar(头像路径，public 用 /assets/...，src 用 assets/...，或填远程URL)、name(昵称)、bio(签名)、links(社交链接数组：name/icon/url/showName)。图标代码去 icones.js.org 查。"
 
       - name: announcement-config
         label: 📢 公告栏
         type: file
         path: src/config/announcementConfig.ts
         format: code
-        description: 博客顶部公告栏的标题、内容和链接配置
+        description: 博客顶部公告条的标题、内容、链接配置。
 
       - name: license-config
         label: 📜 许可协议
         type: file
         path: src/config/licenseConfig.ts
         format: code
-        description: 文章底部版权声明（如 CC BY-NC-SA 4.0）
+        description: 文章底部的版权声明（如 CC BY-NC-SA 4.0）配置。
 
   # ============================================================
   # 🎨 布局与外观
@@ -264,70 +325,70 @@ content:
   - name: layout-appearance
     label: 🎨 布局与外观
     type: group
-    description: 导航栏、侧边栏、壁纸、字体等视觉相关配置
+    description: 导航栏、侧边栏、壁纸、字体等视觉相关配置（代码模式）。
     items:
       - name: twikoo-css
-        label: Twikoo样式
+        label: Twikoo 样式
         type: file
-        path: /assets/css/twikoo-custom.css
+        path: public/assets/css/twikoo-custom.css
         format: code
-        description: 
+        description: Twikoo 评论区的自定义 CSS。
 
       - name: nav-bar-config
         label: 🧭 导航栏
         type: file
         path: src/config/navBarConfig.ts
         format: code
-        description: 导航栏菜单项、链接预设和搜索配置
+        description: 导航栏菜单项、链接预设和搜索配置。
 
       - name: sidebar-config
         label: 📐 侧边栏布局
         type: file
         path: src/config/sidebarConfig.ts
         format: code
-        description: 侧边栏位置、组件（个人资料、公告、音乐、分类、标签等）的显示和排序
+        description: 侧边栏位置、组件（个人资料/公告/音乐/分类/标签等）的显示与排序。
 
       - name: footer-config
         label: 📏 页脚设置
         type: file
         path: src/config/footerConfig.ts
         format: code
-        description: 页脚开关控制
+        description: 页脚开关控制。
 
       - name: footer-html
-        label: 📏 页脚 HTML
+        label: 📝 页脚 HTML
         type: file
         path: src/config/FooterConfig.html
         format: code
-        description: 页脚自定义 HTML 内容（备案号、版权信息等）
+        description: 页脚自定义 HTML（备案号、版权信息等）。
 
       - name: font-config
         label: 🔤 字体设置
         type: file
         path: src/config/fontConfig.ts
         format: code
-        description: 全局字体、横幅字体、Google Fonts、子集化等配置
+        description: 全局字体、横幅字体、Google Fonts、子集化等配置。
 
       - name: cover-image-config
         label: 🖼️ 文章封面图
         type: file
         path: src/config/coverImageConfig.ts
         format: code
-        description: 文章详情页封面图显示和随机图 API 配置
+        description: 文章详情页封面图显示与随机图 API 配置。
 
       - name: background-wallpaper
         label: 🏞️ 背景壁纸
         type: file
         path: src/config/backgroundWallpaper.ts
         format: code
-        description: 全屏壁纸、横幅壁纸、视频背景、水波纹、渐变等背景特效
+        description: 全屏壁纸、横幅壁纸、视频背景、水波纹、渐变等背景特效。
 
       - name: expressive-code-config
         label: 💻 代码块样式
         type: file
         path: src/config/expressiveCodeConfig.ts
         format: code
-        description: 代码高亮主题、折叠插件、语言徽章等代码块配置
+        description: 代码高亮主题、折叠插件、语言徽章等配置。
 
   # ============================================================
   # 🔧 功能配置
@@ -335,70 +396,70 @@ content:
   - name: feature-settings
     label: 🔧 功能配置
     type: group
-    description: 评论、统计、音乐、打赏、友链、特效等功能模块配置
+    description: 评论、统计、音乐、打赏、友链、特效等功能模块配置（代码模式）。
     items:
       - name: comment-config
         label: 💬 评论系统
         type: file
         path: src/config/commentConfig.ts
         format: code
-        description: Twikoo / Waline / Giscus / Artalk / Disqus 评论系统配置
+        description: Twikoo / Waline / Giscus / Artalk / Disqus 评论系统配置。
 
       - name: analytics-config
         label: 📊 数据统计
         type: file
         path: src/config/analyticsConfig.ts
         format: code
-        description: Google Analytics、Microsoft Clarity、Umami、51la 统计配置
+        description: Google Analytics、Microsoft Clarity、Umami、51la 统计配置。
 
       - name: music-config
         label: 🎵 音乐播放器
         type: file
         path: src/config/musicConfig.ts
         format: code
-        description: 音乐播放模式（Meting API / 本地音乐）、播放列表、歌词设置
+        description: 播放模式（Meting API / 本地）、播放列表、歌词设置。
 
       - name: sponsor-config
         label: 💰 打赏页面
         type: file
         path: src/config/sponsorConfig.ts
         format: code
-        description: 打赏用途、支付方式（支付宝/微信/Ko-fi/爱发电）、赞助者列表
+        description: 打赏用途、支付方式（支付宝/微信/Ko-fi/爱发电）、赞助者列表。
 
       - name: friends-data
         label: 🔗 友链数据
         type: file
         path: src/config/friendsConfig.ts
         format: code
-        description: 友链列表（站点名、头像、描述、链接、标签、权重）
+        description: 友链列表（站点名、头像、描述、链接、标签、权重）。
 
       - name: effects-config
         label: 🌸 樱花特效
         type: file
         path: src/config/effectsConfig.ts
         format: code
-        description: 樱花飘落动画的数量、速度、尺寸、透明度等参数
+        description: 樱花飘落的数量、速度、尺寸、透明度等参数。
 
       - name: gallery-config
         label: 🖼️ 相册配置
         type: file
         path: src/config/galleryConfig.ts
         format: code
-        description: 相册列表（ID、名称、描述、地点、日期、标签、密码）和布局设置
+        description: 相册列表（ID/名称/描述/地点/日期/标签/密码）与布局设置。
 
       - name: pio-config
         label: 🎭 看板娘
         type: file
         path: src/config/pioConfig.ts
         format: code
-        description: Spine / Live2D 看板娘模型、位置、交互、气泡提示配置
+        description: Spine / Live2D 看板娘模型、位置、交互、气泡提示配置。
 
       - name: plantuml-config
         label: 📐 PlantUML 图表
         type: file
         path: src/config/plantumlConfig.ts
         format: code
-        description: PlantUML 服务器地址和明暗主题配置
+        description: PlantUML 服务器地址与明暗主题配置。
 
 settings:
   content:
