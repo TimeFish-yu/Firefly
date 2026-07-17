@@ -222,7 +222,11 @@ content:
             required: true
             options:
               time: true
-            description: 说说的发布时刻（含时分秒）。
+              # 关键：必须显式指定带秒的格式，否则 Pages CMS 默认只输出
+              # "2026-07-17T13:07"（T 分隔、无秒），与 Firefly 现有正常文件
+              # "2026-07-15 02:06:13"（空格分隔、带秒）不一致，会导致时间错乱。
+              format: yyyy-MM-dd HH:mm:ss
+            description: 说说的发布时刻（含时分秒，格式 2026-07-15 02:06:13）。新建时自动填为当前时间，与文件名秒数一致。
           - name: body
             label: 内容
             type: text
