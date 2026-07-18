@@ -81,43 +81,7 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		],
 	});
 
-	// 自定义导航栏链接
-	links.push({
-		name: "链接",
-		url: "#",
-		icon: "material-symbols:link",
-		// 子菜单
-		children: [
-			{
-				name: "GitHub",
-				url: "https://github.com/TimeFish-yu",
-				external: true,
-				icon: "fa7-brands:github",
-			},
-			{
-				name: "Bilibili",
-				url: "https://space.bilibili.com/587847197",
-				external: true,
-				icon: "fa7-brands:bilibili",
-			},
-			{
-				name: "Email",
-				url: "mailto:mzane@foxmail.com",
-				external: true,
-				icon: "fa7-solid:envelope",
-			},
-		],
-	});
-
-	// 文档链接
-	// links.push({
-	// 	name: "文档",
-	// 	url: "https://docs-firefly.cuteleaf.cn",
-	// 	external: true,
-	// 	icon: "material-symbols:docs",
-	// });
-
-	return { links } as NavBarConfig;
+		return { links } as NavBarConfig;
 };
 
 // 导航搜索配置
