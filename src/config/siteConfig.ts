@@ -6,7 +6,7 @@ const SITE_LANG = "zh_CN";
 
 export const siteConfig: SiteConfig = {
 	// 站点标题
-	title: "Zane labs",
+	title: "Zane Labs",
 
 	// 站点副标题
 	subtitle: "a blog",
@@ -16,7 +16,7 @@ export const siteConfig: SiteConfig = {
 
 	// 站点描述
 	description:
-		"",
+		"Zane 的个人博客，分享技术、ACGN 与生活的探索与发现。",
 
 	// 站点关键词
 	keywords: [
