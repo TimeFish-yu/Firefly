@@ -358,7 +358,10 @@ body.wallpaper-transparent .twikoo {
 .twikoo .tk-comments-container {
   position: relative !important;
 }
-.twikoo .el-loading-mask {
+/* 注意：不能用 display:flex !important 直接锁死 —— v-show 隐藏时是内联 display:none，
+   !important 会压过它导致遮罩永远可见（评论区一直转圈）。
+   用 :not([style*="display: none"]) 只在遮罩可见时应用弹性布局。 */
+.twikoo .el-loading-mask:not([style*="display: none"]) {
   position: absolute !important;
   inset: 0 !important;
   display: flex !important;
