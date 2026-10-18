@@ -1,8 +1,8 @@
 import type { AnnouncementConfig } from "../types/config";
 
 export const announcementConfig: AnnouncementConfig = {
-	// 公告标题
-	title: "公告",
+	// 公告标题，留空则走i18n默认标题
+	title: "",
 
 	// 公告内容
 	content: "Hi,I'm Zane!	欢迎来到我的博客",

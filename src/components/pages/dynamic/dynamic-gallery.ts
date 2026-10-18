@@ -1,3 +1,5 @@
+import * as FancyboxModule from "@fancyapps/ui";
+
 type GalleryImage = {
 	alt: string;
 	element: HTMLImageElement;
@@ -29,22 +31,18 @@ export function registerDynamicGallery(): void {
 			this.bindControls();
 			this.dataset.ready = "true";
 			this.hidden = false;
+			document.dispatchEvent(new CustomEvent("dynamic-gallery:ready"));
 		}
 
 		private buildGrid() {
 			const grid = this.querySelector<HTMLElement>("[data-gallery-grid]");
 			if (!grid) return;
 			grid.dataset.count = String(Math.min(this.images.length, 6));
-			grid.dataset.layout =
-				this.images.length === 1
-					? "single"
-					: this.images.length <= 4
-						? "two"
-						: "three";
+			grid.dataset.layout = this.images.length === 1 ? "single" : "grid";
 			this.images.slice(0, 6).forEach(({ element, alt }, index) => {
 				const button = document.createElement("button");
 				button.type = "button";
-				button.className = "dynamic-gallery-grid-item";
+				button.className = "page-gallery-grid-item";
 				button.setAttribute(
 					"aria-label",
 					(this.dataset.viewImage || "View image {index}").replace(
@@ -52,7 +50,12 @@ export function registerDynamicGallery(): void {
 						String(index + 1),
 					),
 				);
-				button.addEventListener("click", () => this.open(index));
+				// 只有一张图时，点击直接打开大图查看
+				if (this.images.length === 1) {
+					button.addEventListener("click", () => this.openLightbox(0));
+				} else {
+					button.addEventListener("click", () => this.open(index));
+				}
 				const container =
 					element.closest<HTMLElement>("center") ??
 					element.closest<HTMLElement>("figure") ??
@@ -61,7 +64,7 @@ export function registerDynamicGallery(): void {
 				button.append(element);
 				if (index === 5 && this.images.length > 6) {
 					const more = document.createElement("span");
-					more.className = "dynamic-gallery-more";
+					more.className = "page-gallery-more";
 					more.textContent = `+${this.images.length - 6}`;
 					button.append(more);
 				}
@@ -85,7 +88,7 @@ export function registerDynamicGallery(): void {
 			this.images.forEach(({ element, alt }, index) => {
 				const button = document.createElement("button");
 				button.type = "button";
-				button.className = "dynamic-gallery-thumbnail";
+				button.className = "page-gallery-thumbnail";
 				button.dataset.index = String(index);
 				button.setAttribute(
 					"aria-label",
@@ -114,6 +117,22 @@ export function registerDynamicGallery(): void {
 			this.querySelector("[data-gallery-next]")?.addEventListener("click", () =>
 				this.select(this.activeIndex + 1),
 			);
+			this.querySelector("[data-gallery-lightbox]")?.addEventListener(
+				"click",
+				(event) => {
+					event.preventDefault();
+					const Fancybox = FancyboxModule.Fancybox;
+					Fancybox.show(
+						this.images.map((image) => ({
+							src: image.src,
+							type: "image",
+						})),
+						{
+							startIndex: this.activeIndex,
+						},
+					);
+				},
+			);
 		}
 
 		private open(index: number) {
@@ -133,22 +152,28 @@ export function registerDynamicGallery(): void {
 			viewer.hidden = true;
 		}
 
+		private openLightbox(index: number) {
+			const Fancybox = FancyboxModule.Fancybox;
+			Fancybox.show(
+				this.images.map((image) => ({
+					src: image.src,
+					type: "image",
+				})),
+				{ startIndex: index },
+			);
+		}
+
 		private select(index: number) {
 			this.activeIndex = (index + this.images.length) % this.images.length;
+			const counter = this.querySelector<HTMLElement>("[data-gallery-counter]");
+			if (counter)
+				counter.textContent = `${this.activeIndex + 1} / ${this.images.length}`;
 			const image = this.images[this.activeIndex];
 			const main = this.querySelector<HTMLImageElement>("[data-gallery-main]");
 			if (!main) return;
 			main.src = image.src;
 			main.alt = image.alt;
 			main.dataset.galleryIndex = String(this.activeIndex);
-			const updateAspect = () => {
-				if (main.naturalWidth === 0 || main.naturalHeight === 0) return;
-				const stage = this.querySelector<HTMLElement>(".dynamic-gallery-stage");
-				if (stage)
-					stage.style.aspectRatio = `${main.naturalWidth} / ${main.naturalHeight}`;
-			};
-			if (main.complete && main.naturalWidth > 0) updateAspect();
-			else main.addEventListener("load", updateAspect, { once: true });
 			this.querySelector<HTMLElement>("[data-gallery-lightbox]")?.setAttribute(
 				"data-src",
 				image.src,
