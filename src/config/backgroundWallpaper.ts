@@ -80,33 +80,33 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 				// 完全显示后的暂停时间（毫秒）
 				pauseTime: 2000,
 			},
-			// 是否显示标题下方的链接图标
-			linksEnable: true,
-			// 首页横幅标题下方的链接图标（可选，支持 showName 显示文字）
-			// 图标支持 Iconify 格式：fa7-brands:github、fa7-solid:envelope、mdi:rss 等
-			links: [
-				{
-					name: "GitHub",
-					icon: "fa7-brands:github",
-					url: "https://github.com/CuteLeaf/Firefly",
-					showName: true,
-				},
-				{
-					name: "Email",
-					icon: "fa7-solid:envelope",
-					url: "mailto:xiaye@msn.com",
-				},
-				{
-					name: "Sponsor",
-					icon: "material-symbols:favorite",
-					url: "https://blog.cuteleaf.cn/sponsor/",
-				},
-				{
-					name: "RSS",
-					icon: "fa7-solid:rss",
-					url: "/rss/",
-				},
-			],
+			// 是否显示标题下方的链接图标（按需求关闭）
+			linksEnable: false,
+			// 首页横幅标题下方的链接图标（GitHub / Email / Sponsor / RSS）
+			// 按需求已注释掉；需要恢复时去掉下面各行行首的 "// "，并把 linksEnable 改回 true
+			// links: [
+			// 	{
+			// 		name: "GitHub",
+			// 		icon: "fa7-brands:github",
+			// 		url: "https://github.com/CuteLeaf/Firefly",
+			// 		showName: true,
+			// 	},
+			// 	{
+			// 		name: "Email",
+			// 		icon: "fa7-solid:envelope",
+			// 		url: "mailto:xiaye@msn.com",
+			// 	},
+			// 	{
+			// 		name: "Sponsor",
+			// 		icon: "material-symbols:favorite",
+			// 		url: "https://blog.cuteleaf.cn/sponsor/",
+			// 	},
+			// 	{
+			// 		name: "RSS",
+			// 		icon: "fa7-solid:rss",
+			// 		url: "/rss/",
+			// 	},
+			// ],
 		},
 		// 壁纸轮播配置，横幅壁纸和全屏壁纸共享，仅在配置多张图片时生效
 		carousel: {

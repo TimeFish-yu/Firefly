@@ -25,10 +25,10 @@ const pages = resolvePageToggles({
 	gallery: true,
 	// 书签导航页面开关
 	booknav: false,
-	// 哔哩哔哩追番页面开关
-	bilibili: false,
-	// 番组计划页面开关
-	bangumi: true,
+	// 哔哩哔哩追番页面开关（改用 B站 数据源）
+	bilibili: true,
+	// 番组计划页面开关（api.bangumi.pro 不可用，已停用）
+	bangumi: false,
 	// VNDB页面开关
 	vndb: false,
 	// MyAnimeList页面开关
