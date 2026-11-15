@@ -11,6 +11,8 @@
 #   2. 文章封面、正文插图都用「站点资源」这一个源就够了。
 #   3. 配置类(.ts)文件在 CMS 里是「代码模式」，直接改 TypeScript，
 #      改错语法会让网站构建失败，新手请照描述里的字段改、勿删结构。
+#   4. 普通文章用「📝 博客文章」，含 MDX/JSX 组件的文章用「🧩 MDX 文章」；
+#      两者都存在 src/content/posts 下，按扩展名自动分开。
 # ============================================================
 
 media:
@@ -49,11 +51,11 @@ content:
         type: collection
         path: src/content/posts
         format: yaml-frontmatter
-        subfolders: true            # 文章在 Yui/、guide/ 等子目录，必须开，否则后台看不到
+        subfolders: true            # 文章在 Yui/ 等子目录，必须开，否则后台看不到
         filename:
-          template: "{primary}.md"  # 默认用标题当文件名；新建时可改成英文 slug（如 my-post）
-          field: create
-        exclude: ["**/images/**", "**/*.avif", "**/*.webp", "**/*.png", "**/*.jpg"]
+          template: "{year}-{month}-{day}-{fields.slug}.md"  # 日期 + 英文 slug，避免中文文件名
+          field: create             # 新建时可手改文件名；已有文章不会被重命名
+        exclude: ["**/*.mdx", "**/images/**", "**/*.avif", "**/*.webp", "**/*.png", "**/*.jpg"]
         view:
           primary: title
           fields: [title, published, category, tags, draft, pinned]
@@ -69,6 +71,13 @@ content:
             type: string
             required: true
             description: 博客列表和详情页显示的大标题。
+
+          - name: slug
+            label: 文章网址(英文)
+            type: string
+            required: true
+            pattern: "^[a-z0-9-]+$"
+            description: 决定文章链接 /posts/xxx/，只能用小写英文、数字、连字符；同时用来生成文件名。例：hello-yui
 
           - name: published
             label: 发布时间
@@ -115,7 +124,7 @@ content:
             options:
               creatable: true       # 下拉没有就直接输入新建
               values:
-                - { label: 文章示例, value: 文章示例 }
+                - { label: 日常, value: 日常 }
                 - { label: 技术笔记, value: 技术笔记 }
                 - { label: 生活随笔, value: 生活随笔 }
                 - { label: 教程, value: 教程 }
@@ -131,17 +140,16 @@ content:
               multiple: true
               creatable: true
               values:
-                - { label: 演示, value: 演示 }
-                - { label: 示例, value: 示例 }
-                - { label: 文章示例, value: 文章示例 }
+                - { label: 随笔, value: 随笔 }
+                - { label: AI, value: AI }
+                - { label: 教程, value: 教程 }
                 - { label: Markdown, value: Markdown }
+                - { label: Astro, value: Astro }
+                - { label: JavaScript, value: JavaScript }
                 - { label: Firefly, value: Firefly }
                 - { label: 博客, value: 博客 }
-                - { label: 主题, value: 主题 }
-                - { label: 模板, value: 模板 }
-                - { label: 教程, value: 教程 }
-                - { label: JavaScript, value: JavaScript }
-                - { label: Astro, value: Astro }
+                - { label: 生活, value: 生活 }
+                - { label: 技术, value: 技术 }
             description: 可多选。用于标签页筛选，没有的标签直接输入新建。
 
           - name: lang
@@ -195,9 +203,84 @@ content:
 
           - name: body
             label: 正文
+            type: rich-text
+            required: true
+            options:
+              format: markdown     # 输出 Markdown，不输出 HTML
+              switcher: true       # 右上角可切「编辑器 / 源码」
+              media: assets        # 工具栏插图直接走「站点资源」
+            description: 所见即所得编辑器；想直接写 Markdown 就切「源码」。插图点工具栏图片按钮，从「站点资源」选或上传。
+
+      # ---------- MDX 文章 ----------
+      - name: posts-mdx
+        label: 🧩 MDX 文章
+        type: collection
+        path: src/content/posts
+        format: yaml-frontmatter
+        subfolders: true
+        filename:
+          template: "{year}-{month}-{day}-{fields.slug}.mdx"
+          field: create
+        exclude: ["**/*.md", "**/images/**", "**/*.avif", "**/*.webp", "**/*.png", "**/*.jpg"]
+        view:
+          primary: title
+          fields: [title, published, category, tags, draft]
+          sort: [published, title]
+          search: [title, description, tags, category]
+          default:
+            sort: published
+            order: desc
+        fields:
+          - name: title
+            label: 文章标题
+            type: string
+            required: true
+          - name: slug
+            label: 文章网址(英文)
+            type: string
+            required: true
+            pattern: "^[a-z0-9-]+$"
+            description: 决定文章链接与文件名，只能用小写英文、数字、连字符。
+          - name: published
+            label: 发布时间
+            type: date
+            required: true
+            options:
+              time: false
+          - name: draft
+            label: 存为草稿
+            type: boolean
+            default: false
+          - name: description
+            label: 文章摘要
+            type: text
+          - name: image
+            label: 封面图
+            type: image
+            options:
+              media: assets
+          - name: category
+            label: 分类
+            type: select
+            options:
+              creatable: true
+              values:
+                - { label: 日常, value: 日常 }
+                - { label: 技术笔记, value: 技术笔记 }
+          - name: tags
+            label: 标签
+            type: select
+            options:
+              multiple: true
+              creatable: true
+              values:
+                - { label: 随笔, value: 随笔 }
+                - { label: AI, value: AI }
+          - name: body
+            label: 正文(MDX)
             type: text
             required: true
-            description: 文章主体，支持 Markdown（# 标题、- 列表、```代码块```、![图](/assets/xxx) 等）。
+            description: 保持纯文本编辑（LOSSLESS），避免富文本编辑器改写 MDX/JSX 组件。
 
       # ---------- 说说 / 动态 ----------
       - name: dynamic
@@ -300,7 +383,7 @@ content:
         type: file
         path: src/config/siteConfig.ts
         format: code
-        description: "关键字段：title(站名)、subtitle(副标题)、site_url(域名)、description(描述)、keywords(关键词)、themeColor(主题色 hue 0-360 / defaultMode light|dark|system)、navbar(Logo与标题)、pages(各页面开关 friends/sponsor/guestbook/bangumi/gallery/dynamic)、postListLayout(列表布局)、pagination.postsPerPage(每页篇数)。"
+        description: "⚠️ 代码模式：改错语法会直接让 Vercel 构建失败（已发生过）。当前关键字段：title/subtitle/site_url/description/keywords、themeColor.hue(主题色 0-360)、timezone、lang、pages(页面开关 friends/guestbook/dynamic/projects/gallery/booknav/bilibili/bangumi/vndb/mal/sponsor)、postListLayout.defaultMode、pagination.postsPerPage。上游已删除 themeColor.fixed、postListLayout.allowSwitch 等旧键，别再找它们。"
 
       - name: profile-config
         label: 👤 个人信息
@@ -351,13 +434,6 @@ content:
         path: src/config/sidebarConfig.ts
         format: code
         description: 侧边栏位置、组件（个人资料/公告/音乐/分类/标签等）的显示与排序。
-
-      - name: footer-config
-        label: 📏 页脚设置
-        type: file
-        path: src/config/footerConfig.ts
-        format: code
-        description: 页脚开关控制。
 
       - name: footer-html
         label: 📝 页脚 HTML
@@ -467,4 +543,4 @@ content:
 
 settings:
   content:
-    merge: false
+    merge: true   # 保留 frontmatter 里 CMS 未声明的字段（如 slug）；false 会按 schema 整文件重写并吞掉它们
