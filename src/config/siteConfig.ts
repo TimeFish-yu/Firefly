@@ -30,9 +30,9 @@ const pages = resolvePageToggles({
 	// 番组计划页面开关（api.bangumi.pro 不可用，已停用）
 	bangumi: false,
 	// VNDB页面开关
-	vndb: false,
+  	vndb: true,
 	// MyAnimeList页面开关
-	mal: false,
+	mal: true,
 
 	// ── 关于 (About) ──────────────────────────────────
 
