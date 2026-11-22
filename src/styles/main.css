@@ -694,6 +694,8 @@ html {
   --page-bg: #faf7f5;
   /* 变量名见 styles/variables.styl：默认是 white，纸感下与页面底同色，靠 1px 描边区分层级 */
   --card-bg: #faf7f5;
+  /* 半透明卡片（浮动目录、代码块、markdown 子层等）同步纸色，避免透出白底 */
+  --card-bg-transparent: rgb(250 247 245 / var(--card-transparent-opacity, 0.6));
   --deep-text: #26251e;
   /* 小字元数据：原 rgba(0,0,0,.7) 改为 6f6e68，在纸白底上 ≥4.5:1 */
   --content-meta: #6f6e68;
