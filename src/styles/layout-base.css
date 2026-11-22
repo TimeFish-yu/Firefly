@@ -81,7 +81,7 @@
   /* --content-top 由 html[data-wallpaper-mode] + body.is-home + 媒体查询解析（解析期生效，无 JS 内联 top） */
   /* banner（桌面全页 + 移动首页）：内容在横幅下方，重叠 3.5rem */
   html[data-wallpaper-mode="banner"] .content-panel {
-    --content-top: calc(var(--banner-height-home) - 3.5rem); /* = 65vh - 3.5rem */
+    --content-top: calc(var(--banner-height-home) - 3.5rem); /* = 40vh - 3.5rem（首页横幅高度，随常量/CSS 覆盖联动） */
   }
   /* banner 移动端非首页：横幅隐藏，内容从导航栏下方开始 */
   @media (max-width: 1023px) {

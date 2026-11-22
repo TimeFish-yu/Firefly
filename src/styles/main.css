@@ -692,6 +692,8 @@ html {
 /* 1) 纸白 / 墨黑变量（变量名取自 styles/variables.styl），仅浅色主题 */
 :root:not(.dark) {
   --page-bg: #faf7f5;
+  /* 变量名见 styles/variables.styl：默认是 white，纸感下与页面底同色，靠 1px 描边区分层级 */
+  --card-bg: #faf7f5;
   --deep-text: #26251e;
   /* 小字元数据：原 rgba(0,0,0,.7) 改为 6f6e68，在纸白底上 ≥4.5:1 */
   --content-meta: #6f6e68;
@@ -751,6 +753,10 @@ html[data-wallpaper-mode="banner"]:not(.dark) .banner-home-text-overlay .banner-
 :focus-visible {
   outline: 2px solid #26251e;
   outline-offset: 2px;
+}
+/* 暗色主题：墨黑环在暗底不可见，改用浅灰（高特异性覆盖上面的基线） */
+:root.dark :focus-visible {
+  outline-color: #ebebeb;
 }
 
 /* 5) 小字元数据（日期/阅读时长等）从 black/50、black/30 升级到 6f6e68。

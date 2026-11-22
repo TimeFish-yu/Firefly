@@ -13,14 +13,16 @@ export const WALLPAPER_BANNER = "banner",
 
 // Banner height unit: vh
 export const BANNER_HEIGHT = 35;
-export const BANNER_HEIGHT_EXTEND = 30;
+// 首页横幅 = 35 + 5 = 40vh，与 main.css 的 --banner-height-home: 40vh 保持一致
+export const BANNER_HEIGHT_EXTEND = 5;
 export const BANNER_HEIGHT_HOME: number = BANNER_HEIGHT + BANNER_HEIGHT_EXTEND;
 
 // The height the main panel overlaps the banner, unit: rem
 export const MAIN_PANEL_OVERLAPS_BANNER_HEIGHT = 3.5;
 
 // Non-home banner height (unit: vh) — banner mode, desktop only.
-// Lift = BANNER_HEIGHT_HOME(65) - BANNER_HEIGHT_NON_HOME: 45=20vh, 50=15vh, 35=fuwari 30vh.
+// Lift = BANNER_HEIGHT_HOME(40) - BANNER_HEIGHT_NON_HOME(45) = -5vh：
+// 非首页横幅比首页高 5vh，wrapper 由 layout-base.css 的 transform 向下对齐 5vh。
 export const BANNER_HEIGHT_NON_HOME = 45;
 // Pixel floor for the non-home banner (unit: px) — cushions short (laptop) screens,
 // so the vh value resolving to too few absolute pixels doesn't cramp the title/description.
