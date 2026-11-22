@@ -703,6 +703,30 @@ html {
   --line-divider: #e5e2e0;
   --line-color: #e5e2e0;
   --radius-large: 12px;
+
+  /* 墨黑灰阶：覆盖 variables.styl 里所有跟随 --hue 的 oklch 色，
+     否则主题色、按钮、日历、标签、链接仍是蓝色 */
+  --primary: #26251e;
+  --btn-content: #26251e;
+  --btn-regular-bg: #f0eeec;
+  --btn-regular-bg-hover: #e5e2e0;
+  --btn-regular-bg-active: #d8d5d2;
+  --btn-plain-bg-hover: #f0eeec;
+  --btn-plain-bg-active: #faf7f5;
+  --btn-card-bg-hover: #f5f3f1;
+  --btn-card-bg-active: #ebe8e5;
+  --title-active: #26251e;
+  --muted: #f0eeec;
+  --selection-bg: #e5e2e0;
+  --link-underline: #e5e2e0;
+  --link-hover: #f0eeec;
+  --link-active: #e5e2e0;
+  --toc-badge-bg: #f0eeec;
+  --toc-btn-hover: #f5f3f1;
+  --toc-btn-active: #ebe8e5;
+  --toc-indicator-bg: #f0eeec;
+  --toc-item-active: #26251e;
+  --l2d-msg-bg: #26251e;
 }
 
 html:not(.dark) body {
