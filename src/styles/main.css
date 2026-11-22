@@ -683,6 +683,65 @@ html {
 }
 
 /* ==========================================================================
+   墨黑灰阶归一（最高优先级）
+   主题色相由 JS 从 localStorage 注入到 :root 内联样式，且组件里有硬编码
+   oklch(... var(--hue))，只覆盖具名变量无法根除残留蓝色。
+   这里直接把 --hue 钉为 0，并让所有 oklch 色度为 0 —— 无论色相是多少都是无彩灰。
+   代价：设置面板的色相滑块不再改变颜色（简约风格下刻意如此）。
+   ========================================================================== */
+html:root {
+  --hue: 0 !important;
+}
+
+/* 暗色主题：把 variables.styl 里所有带色度的 oklch 覆盖为无彩灰阶 */
+:root.dark {
+  --primary: #ebebeb;
+  --page-bg: #191d24;
+  --card-bg: #292e37;
+  --card-bg-transparent: rgb(41 45 55 / var(--card-transparent-opacity, 0.6));
+  --btn-content: #ebebeb;
+  --btn-regular-bg: #343944;
+  --btn-regular-bg-hover: #414652;
+  --btn-regular-bg-active: #4c525f;
+  --btn-plain-bg-hover: #343944;
+  --btn-plain-bg-active: #292e37;
+  --btn-card-bg-hover: #343944;
+  --btn-card-bg-active: #414652;
+  --muted: #292e37;
+  --selection-bg: #414652;
+  --codeblock-bg: #1f232b;
+  --codeblock-topbar-bg: #292e37;
+  --link-underline: #545454;
+  --link-hover: #343944;
+  --link-active: #414652;
+  --toc-badge-bg: #343944;
+  --toc-btn-hover: #343944;
+  --toc-btn-active: #414652;
+  --toc-indicator-bg: #343944;
+  --toc-item-active: #ebebeb;
+  --l2d-msg-bg: #414652;
+}
+
+/* 组件里硬编码的 oklch(... var(--hue)) 无法靠变量覆盖，色度归零后自动变灰；
+   -risk note: 若个别组件仍显色，是它用了固定色相（如 admonitions），非主题色。 */
+
+/* 非首页大标题统一：原为 text-white + 黑色 text-shadow，纸色横幅下改为墨黑 */
+html:not(.dark) .banner-page-title,
+html:not(.dark) .banner-post-title {
+  color: #26251e !important;
+  text-shadow: none !important;
+}
+html:not(.dark) .banner-post-meta-list,
+html:not(.dark) .banner-post-description-quote {
+  color: #504f49 !important;
+  text-shadow: none !important;
+}
+html:not(.dark) .banner-post-description {
+  background: rgb(38 37 30 / 0.06);
+  text-shadow: none !important;
+}
+
+/* ==========================================================================
    纸感横幅（Paper Banner）覆盖层
    配置层保持 mode="banner" 与全部动画开关，仅在样式层去掉大图观感：
    标题/副标题/打字机/水波纹/渐变/模糊渐变组件与结构全部保留。
