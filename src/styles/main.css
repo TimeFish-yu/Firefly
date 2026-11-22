@@ -681,3 +681,123 @@ html {
 .pagination-info {
   @apply text-sm text-(--text-secondary) text-center mb-2;
 }
+
+/* ==========================================================================
+   纸感横幅（Paper Banner）覆盖层
+   配置层保持 mode="banner" 与全部动画开关，仅在样式层去掉大图观感：
+   标题/副标题/打字机/水波纹/渐变/模糊渐变组件与结构全部保留。
+   本段是唯一收口，避免在多文件重复定义同名覆盖。
+   ========================================================================== */
+
+/* 1) 纸白 / 墨黑变量（变量名取自 styles/variables.styl），仅浅色主题 */
+:root:not(.dark) {
+  --page-bg: #faf7f5;
+  --deep-text: #26251e;
+  /* 小字元数据：原 rgba(0,0,0,.7) 改为 6f6e68，在纸白底上 ≥4.5:1 */
+  --content-meta: #6f6e68;
+  --meta-divider: #6f6e68;
+  --line-divider: #e5e2e0;
+  --line-color: #e5e2e0;
+  --radius-large: 12px;
+}
+
+html:not(.dark) body {
+  color: #26251e;
+}
+
+/* 2) 横幅高度：Layout.astro 用 define:vars 注入 :root 变量，
+   这里用更高特异性（html + 属性 + :root）覆盖，避免依赖样式表/内联 <style> 的先后顺序。
+   不单独改 --content-top：layout-base.css:84 会随此变量联动。 */
+html[data-wallpaper-mode="banner"]:root {
+  --banner-height-home: 40vh;
+}
+
+/* banner 首页 wrapper 在 <1024px 被 layout-styles.css:25-63,178-217 硬编码为 65vh/75/80/85/90vh !important，
+   必须用更高特异性 + !important 覆盖，否则移动端仍是 65vh */
+@media (max-width: 1023px) {
+  html[data-wallpaper-mode="banner"] body.is-home #wallpaper-wrapper {
+    height: 40vh !important;
+  }
+}
+@media (max-width: 767px) {
+  html[data-wallpaper-mode="banner"] body.is-home #wallpaper-wrapper {
+    height: 34vh !important;
+    min-height: 260px !important;
+  }
+}
+@media (max-width: 1023px) and (max-height: 500px) {
+  html[data-wallpaper-mode="banner"] body.is-home #wallpaper-wrapper {
+    height: 28vh !important;
+    min-height: 0 !important;
+  }
+  html[data-wallpaper-mode="banner"] body.is-home #header-waves.waves {
+    display: none !important;
+  }
+}
+
+/* 3) 横幅文字反色：BannerHomeTextOverlay.astro 硬编码 text-white/text-white/90，
+   banner-home.css 多处（含媒体查询）带 !important 黑色 text-shadow，必须同强度覆盖。
+   只在浅色主题反色；暗色主题保留原白字以适配暗底。 */
+html[data-wallpaper-mode="banner"]:not(.dark) .banner-home-text-overlay .banner-title {
+  color: #26251e !important;
+  text-shadow: none !important;
+}
+html[data-wallpaper-mode="banner"]:not(.dark) .banner-home-text-overlay .banner-subtitle {
+  color: #504f49 !important;
+  text-shadow: none !important;
+}
+
+/* 4) 焦点环：全站键盘焦点使用墨黑，禁止低对比的 #e5e2e0 */
+:focus-visible {
+  outline: 2px solid #26251e;
+  outline-offset: 2px;
+}
+
+/* 5) 小字元数据（日期/阅读时长等）从 black/50、black/30 升级到 6f6e68。
+   非 !important：post-meta-cover 上的白字 !important 规则仍优先生效。 */
+html:not(.dark) .text-50,
+html:not(.dark) .text-30 {
+  color: #6f6e68;
+}
+
+/* 6) 卡片降噪：细边框、无阴影、12px 圆角（card-base 内边距由各组件控制，避免全局 padding 破坏封面图） */
+html:not(.dark) .card-base,
+html:not(.dark) .btn-card {
+  border: 1px solid #e5e2e0;
+  box-shadow: none;
+  border-radius: 12px;
+}
+
+/* 7) 标签改细线矩形：当前 tagStyle=pill-gray，用更高特异性覆盖胶囊与灰色底 */
+html:not(.dark)[data-tag-style="pill-gray"] .tag-item,
+html:not(.dark) .tag-item {
+  border: 1px solid #e5e2e0;
+  border-radius: 4px;
+  background: transparent;
+  color: #504f49;
+}
+html:not(.dark)[data-tag-style="pill-gray"] .tag-item:hover,
+html:not(.dark) .tag-item:hover {
+  border-color: #26251e;
+  background: transparent;
+  color: #26251e;
+}
+html:not(.dark) .tag-item .tag-count-badge {
+  border-radius: 2px;
+  background: transparent;
+  color: inherit;
+}
+
+/* 8) 页面/主题转场压到 180ms（150-220ms 区间） */
+.transition-main,
+.transition-leaving,
+.transition-swup-fade,
+html.is-changing .transition-main,
+html.is-leaving .transition-leaving {
+  transition-duration: 180ms;
+}
+::view-transition-old(root),
+::view-transition-new(root),
+::view-transition-group(root) {
+  animation-duration: 180ms;
+}
