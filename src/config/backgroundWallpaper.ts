@@ -38,10 +38,11 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 	src: {
 		// 桌面背景图片（支持单张或多张随机）
 		// desktop: "assets/images/DesktopWallpaper/d1.avif",
-		desktop: "https://t.alcy.cc/pc",
+		// 已清空随机壁纸源：去掉头图大图（desktop/mobile 必须同时为空，否则会互相 fallback）
+		desktop: "",
 		// 移动背景图片（支持单张或多张随机）
 		// mobile: "assets/images/MobileWallpaper/m1.avif",
-		mobile: "https://t.alcy.cc/mp",
+		mobile: "",
 		// 背景视频播放地址
 		// 支持单个视频路径（字符串）或多个视频循环（数组，参考上面壁纸配置）
 		// 支持远程视频URL，本地视频请放在 public/assets/videos/ 目录下
@@ -50,8 +51,9 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 	},
 	// 横幅壁纸和全屏壁纸共享配置
 	common: {
-		// 壁纸遮罩暗度，让横幅文字显示更清晰，0-1之间，值越大越暗
-		dimOpacity: 0.2,
+		// 壁纸遮罩暗度，0-1之间，值越大越暗
+		// 壁纸源已清空，靠高遮罩把横幅压成近黑底，保证硬编码的白字可读
+		dimOpacity: 0.9,
 		// 多视频播放模式："order" 顺序循环，"random" 随机切换（仅当 playerUrl 为数组时生效）
 		playerMode: "random",
 		// 主页横幅文字
