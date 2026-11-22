@@ -18,10 +18,10 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 	 * 所以建议使用自己的图片的时候命名为其他名称，不要使用d1-d6，m1-m6这些名称
 	 *
 	 * 如果只使用一张图片或者使用随机图API，推荐直接使用字符串格式：
-	 * desktop: "https://example.com/random-pc",   // 随机图API 示例
+	 * desktop: "https://t.alcy.cc/pc",   // 随机图API
 	 * desktop: "assets/images/DesktopWallpaper/d1.avif", // 单张图片
 	 *
-	 * mobile: "https://example.com/random-mp", // 随机图API 示例
+	 * mobile: "https://t.alcy.cc/mp", // 随机图API
 	 * mobile: "assets/images/MobileWallpaper/m1.avif", // 单张图片
 	 *
 	 * 支持配置多张图片（数组），每次刷新页面随机显示一张：
@@ -38,10 +38,10 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 	src: {
 		// 桌面背景图片（支持单张或多张随机）
 		// desktop: "assets/images/DesktopWallpaper/d1.avif",
-		desktop: "",
+		desktop: "https://t.alcy.cc/pc",
 		// 移动背景图片（支持单张或多张随机）
 		// mobile: "assets/images/MobileWallpaper/m1.avif",
-		mobile: "",
+		mobile: "https://t.alcy.cc/mp",
 		// 背景视频播放地址
 		// 支持单个视频路径（字符串）或多个视频循环（数组，参考上面壁纸配置）
 		// 支持远程视频URL，本地视频请放在 public/assets/videos/ 目录下
@@ -51,8 +51,7 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 	// 横幅壁纸和全屏壁纸共享配置
 	common: {
 		// 壁纸遮罩暗度，让横幅文字显示更清晰，0-1之间，值越大越暗
-		// 纸感横幅无图片，保持 0 避免把纸白底染灰
-		dimOpacity: 0,
+		dimOpacity: 0.2,
 		// 多视频播放模式："order" 顺序循环，"random" 随机切换（仅当 playerUrl 为数组时生效）
 		playerMode: "random",
 		// 主页横幅文字
@@ -62,13 +61,13 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 			// 主页横幅主标题
 			title: "Zane Labs",
 			// 主页横幅主标题字体大小
-			titleSize: "clamp(2.5rem, 5vw, 4rem)",
+			titleSize: "4.5rem",
 			// 主页横幅副标题
 			subtitle: [
 				"分享技术、ACGN 与生活的探索",
 			],
 			// 主页横幅副标题字体大小
-			subtitleSize: "1.125rem",
+			subtitleSize: "1.5rem",
 			typewriter: {
 				// 是否启用打字机效果
 				// 打字机开启 → 循环显示所有副标题
@@ -152,10 +151,10 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 		// 导航栏配置
 		navbar: {
 			// 导航栏透明模式："semi" 半透明，"semifull" 动态透明，"none" 纯色不透明
-			transparentMode: "none",
+			transparentMode: "semi",
 			// 毛玻璃模糊度，0 即关闭导航栏的毛玻璃
 			// 注意：导航栏子菜单与浮动面板始终保留毛玻璃，模糊度跟随此项但有最小值
-			blur: 0,
+			blur: 12,
 		},
 	},
 	// 覆盖透明覆盖模式特有配置

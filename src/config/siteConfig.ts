@@ -67,9 +67,8 @@ export const siteConfig: SiteConfig = {
 
 	// 主题色
 	themeColor: {
-		// 主题色相：简约墨黑灰阶风格，色相固定为 0
-		// 注：浏览器 localStorage 里若存过旧色相会覆盖此值，样式层已强制归一
-		hue: 0,
+		// 主题色的默认色相，范围从 0 到 360。例如：红色：0，青色：200，蓝绿色：250，粉色：345
+		hue: 255,
 		// 默认模式："light" 亮色，"dark" 暗色，"system" 跟随系统
 		defaultMode: "system",
 	},
@@ -77,12 +76,12 @@ export const siteConfig: SiteConfig = {
 	// 页面整体宽度（单位：rem）
 	// 数值越大可以让页面内容区域更宽
 	// 在使用单侧栏边栏时，建议调低一些宽度以获得更好的视觉效果。
-	pageWidth: 90,
+	pageWidth: 100,
 
 	// 网站Card样式配置
 	card: {
 		// 是否开启卡片边框和阴影，开启后让网站更有立体感
-		border: false,
+		border: true,
 		// 是否让卡片风格跟随主题色相
 		followTheme: false,
 	},
@@ -152,7 +151,7 @@ export const siteConfig: SiteConfig = {
 	// "pill"：胶囊，主题色底圆角
 	// "pill-gray"：胶囊，中性灰底圆角
 	// "rectangle"：矩形，主题色底小圆角
-	tagStyle: "pill-gray",
+	tagStyle: "pill",
 
 	// 归档页是否折叠非最新年份文章，禁用后默认展开全部年份
 	foldArticle: true,
@@ -169,7 +168,7 @@ export const siteConfig: SiteConfig = {
 		// 文章简介显示行数，设为 0 则不截断
 		descriptionLines: 2,
 		// 文章卡片底部统计和发布日期是否显示图标
-		showStatsIcons: false,
+		showStatsIcons: true,
 		// 标签显示位置
 		// 设置为"meta"：显示在文章标题下的元数据
 		// 设置为"bottom"：顶替stats在底部显示
